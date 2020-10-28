@@ -51,12 +51,25 @@ class CandidatesPage extends Component {
 		const acceptedCandidate = candidates.find(c => c.id === acceptedId);
 		const newCandidates = candidates.filter(c => c.id !== acceptedId);
 		const newAcceptedCandidates = [...acceptedCandidates, acceptedCandidate];
-		this.setState({candidates: newCandidates, acceptedCandidates: newAcceptedCandidates});
+		let selectedCandidate = this.state.selectedCandidate;
+		if (selectedCandidate.id === acceptedId) {
+			selectedCandidate = newCandidates[0];
+		}
+		this.setState({
+			candidates: newCandidates,
+			acceptedCandidates: newAcceptedCandidates,
+			selectedCandidate,
+		});
 		this.loadNextCandidate();
 	}
 
 	handleCandidateRejected(rejectedId) {
-		this.setState({candidates: this.state.candidates.filter(c => c.id !== rejectedId)});
+		const candidates = this.state.candidates.filter(c => c.id !== rejectedId);
+		let selectedCandidate = this.state.selectedCandidate;
+		if (selectedCandidate.id === rejectedId) {
+			selectedCandidate = candidates[0];
+		}
+		this.setState({candidates, selectedCandidate});
 		this.loadNextCandidate();
 	}
 
